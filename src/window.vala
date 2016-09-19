@@ -42,6 +42,7 @@ namespace Ennio {
 			menu.append ("Save As...", "win.saveas");
 
             var winmenu = new MenuButton();
+            winmenu.image = new Image.from_icon_name("open-menu-symbolic", IconSize.MENU);
             winmenu.margin_start = 5;
             winmenu.menu_model = menu;
 			winmenu.use_popover = true;
