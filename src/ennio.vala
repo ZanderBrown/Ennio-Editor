@@ -109,25 +109,31 @@ namespace Ennio {
 				label.unsaved = false;
 			});
 		}
+		public void saveas () {
+			var pick = new FileChooserDialog("Save As", 
+											 (Window) this.get_toplevel(),
+											 FileChooserAction.SAVE,
+											 "_Cancel",
+											 ResponseType.CANCEL,
+											 "_Save",                                           
+											 ResponseType.ACCEPT);
+			pick.select_multiple = false;
+			if (pick.run () == ResponseType.ACCEPT) {
+				file = new SourceFile();
+				file.location = pick.get_file();
+				untitled = false;
+				label.title_from_file(pick.get_file());
+				pick.destroy ();
+				save ();
+			} else {
+				pick.destroy ();
+				return;
+			}
+		}
 		public void save () {
 			if (untitled) {
-				var pick = new FileChooserDialog("Save As", 
-                                                 (Window) this.get_toplevel(),
-                                                 FileChooserAction.SAVE,
-                                                 "_Cancel",
-                                                 ResponseType.CANCEL,
-                                                 "_Save",                                           
-                                                 ResponseType.ACCEPT);
-				pick.select_multiple = false;
-				if (pick.run () == ResponseType.ACCEPT) {
-					file = new SourceFile();
-					file.location = pick.get_file();
-					untitled = false;
-					pick.destroy ();
-				} else {
-					pick.destroy ();
-					return;
-				}
+				saveas();
+				return;
 			}
 			var source_file_saver = new SourceFileSaver(buffer, file);
 			label.working = true;
@@ -137,7 +143,6 @@ namespace Ennio {
 				label.working = false;
 				var lm = new SourceLanguageManager();
 				var language = lm.guess_language(file.location.get_path(), null);
-				
 				if (language != null) {
 					buffer.language = language;
 					buffer.highlight_syntax = true;
@@ -206,6 +211,10 @@ namespace Ennio {
 			pack_end(button, false, false, 0);			   
 			pack_end(spinner, false, false, 0);
 			show_all();
+		}
+		public void title_from_file (File file) {
+			text = file.get_basename();
+			tooltip_text = file.get_path();
 		}
 		public DocumentLabel.from_file (File file) {
 			this(file.get_basename());

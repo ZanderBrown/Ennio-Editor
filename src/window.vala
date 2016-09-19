@@ -31,6 +31,21 @@ namespace Ennio {
 			tabs.switch_page.connect((page) => {
 				title = ((DocumentLabel) tabs.get_tab_label(page)).text;
 			});
+
+			SimpleAction saveasact = new SimpleAction("saveas", null);
+			saveasact.activate.connect(() => {
+				tabs.current.saveas ();
+			});
+			this.add_action (saveasact);
+
+			var menu = new GLib.Menu ();
+			menu.append ("Save As...", "win.saveas");
+
+            var winmenu = new MenuButton();
+            winmenu.margin_start = 5;
+            winmenu.menu_model = menu;
+			winmenu.use_popover = true;
+            hbarright.pack_start (winmenu, false, false, 0);
             
             this.add (tabs);
             this.set_default_size (800, 700);

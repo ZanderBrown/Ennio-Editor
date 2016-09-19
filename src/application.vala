@@ -73,7 +73,6 @@ namespace Ennio {
 		}
 		public void savefile () {
 			current_win.tabs.current.save();
-
 		}
 		public void openfile () {
             var pick = new FileChooserDialog("Open", 
