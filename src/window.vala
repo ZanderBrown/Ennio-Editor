@@ -29,17 +29,22 @@ namespace Ennio {
             hbarright.pack_start (save, false, false, 0);
 
 			tabs.switch_page.connect((page) => {
-				title = ((DocumentLabel) tabs.get_tab_label(page)).text;
+				title = tabs.current.label.text;
 			});
 
 			SimpleAction saveasact = new SimpleAction("saveas", null);
-			saveasact.activate.connect(() => {
-				tabs.current.saveas ();
-			});
+			saveasact.activate.connect(tabs.current.saveas);
 			this.add_action (saveasact);
+
+			SimpleAction findact = new SimpleAction("find", null);
+			findact.activate.connect(() => {
+				tabs.current.find();
+			});
+			this.add_action (findact);
 
 			var menu = new GLib.Menu ();
 			menu.append ("Save As...", "win.saveas");
+			menu.append ("Find", "win.find");
 
             var winmenu = new MenuButton();
             winmenu.image = new Image.from_icon_name("open-menu-symbolic", IconSize.MENU);

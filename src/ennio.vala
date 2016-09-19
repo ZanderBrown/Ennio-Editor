@@ -46,11 +46,14 @@ namespace Ennio {
 	}
     public class Document : ScrolledWindow {
 		public SourceBuffer buffer = new SourceBuffer(null);
+		public SearchBar search = new SearchBar();
+		public SearchEntry searchentry = new SearchEntry();
 		public SourceView text;
 		public DocumentLabel label;
 		public SourceFile file;
 		public bool untitled = true;
 		public Document (Notebook container) {
+			var content = new Box (Orientation.VERTICAL, 0);
 			text = new SourceView.with_buffer(buffer);
             text.wrap_mode = WrapMode.NONE;
             text.indent = 2;
@@ -63,8 +66,27 @@ namespace Ennio {
 			text.smart_home_end = SourceSmartHomeEndType.BEFORE;
 			text.auto_indent = true;
 			text.show_right_margin = true;
+			text.expand = true;
 			buffer.set_style_scheme(SourceStyleSchemeManager.get_default().get_scheme("cobalt"));
-            add (text);
+
+			search.show_close_button = true;
+			search.add(searchentry);
+			searchentry.search_changed.connect(() => {
+				TextIter start;
+				TextIter match_start;
+				TextIter match_end;
+				buffer.get_start_iter (out start);
+				if (start.forward_search (searchentry.text, TextSearchFlags.CASE_INSENSITIVE,
+                                    out match_start, out match_end, null)) {
+					buffer.select_range (match_start, match_end);
+					text.scroll_to_iter (match_start, 0.0, false, 0.0, 0.0);
+				}
+			});
+			
+			content.add (search);
+            content.add (text);
+            add (content);
+            
             label = new DocumentLabel("Untitled");
 			label.close_clicked.connect(() => {
 				var pagenum = container.page_num(this);
@@ -109,6 +131,11 @@ namespace Ennio {
 				label.unsaved = false;
 			});
 		}
+
+		public void find () {
+			search.search_mode_enabled = true;
+		}
+		
 		public void saveas () {
 			var pick = new FileChooserDialog("Save As", 
 											 (Window) this.get_toplevel(),
