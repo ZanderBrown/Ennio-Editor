@@ -157,7 +157,9 @@ namespace Ennio {
 				file = new SourceFile();
 				file.location = pick.get_file();
 				untitled = false;
-				label.title_from_file(pick.get_file());
+				label.text = pick.get_file().get_basename();
+				label.file = pick.get_file();
+				label.tooltip_text = pick.get_file().get_path();
 				pick.destroy ();
 				save ();
 			} else {
@@ -214,17 +216,19 @@ namespace Ennio {
 			set { spinner.active = value; }
 		}
 		private Label label;
-		public Button button = new Button();
+		public File file;
 		public DocumentLabel(string label_text) {
 			orientation = Orientation.HORIZONTAL;
 			spacing = 5;
-				
+			tooltip_text = "This document has not been saved";
+
 			label = new Label(label_text);
 			label.expand = true;
 			label.margin_start = 45;
 			
 			pack_start(label, true, true, 0);
 
+			var button = new Button();
 			button.relief = ReliefStyle.NONE;
 			button.focus_on_click = false;
 			button.add(new Image.from_icon_name("window-close-symbolic", IconSize.MENU));
@@ -238,16 +242,13 @@ namespace Ennio {
 			} catch (Error e) {
 				warning ("loading css: %s", e.message);
 			}
-			pack_end(button, false, false, 0);			   
+			pack_end(button, false, false, 0);
 			pack_end(spinner, false, false, 0);
 			show_all();
 		}
-		public void title_from_file (File file) {
-			text = file.get_basename();
-			tooltip_text = file.get_path();
-		}
 		public DocumentLabel.from_file (File file) {
 			this(file.get_basename());
+			this.file = file;
 			tooltip_text = file.get_path();
 		}
 	}

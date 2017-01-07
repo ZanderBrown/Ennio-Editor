@@ -58,6 +58,12 @@ namespace Ennio {
 			saveact.activate.connect(savefile);
 			this.add_action (saveact);
 
+			SimpleAction prefact = new SimpleAction("preferences", null);
+			prefact.activate.connect(() => {
+				(new Prefrences(current_win.get_titlebar())).popup();
+			});
+			this.add_action (prefact);
+
 			SimpleAction dark = new SimpleAction.stateful ("dark", null, new Variant.boolean (false));
 			dark.activate.connect(() => {
 				Variant state = dark.get_state ();
