@@ -51,5 +51,19 @@
 		    	When multiple lines are selected indent them using the tab key
 		 	</description>
 		</key>
+		<key name='prefs-in-dialog' type='b'>
+			<default>false</default>
+			<summary>Use Dialog for Prefrences</summary>
+			<description>
+		    	Whether or not to display prefrences in a seperate dialog
+		 	</description>
+		</key>
+		<key name='picker-in-dialog' type='b'>
+			<default>true</default>
+			<summary>Use Dialog for File Picker</summary>
+			<description>
+		    	Use standard filepicker or experimental popover
+		 	</description>
+		</key>
 	</schema>
 </schemalist>

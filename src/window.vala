@@ -40,19 +40,47 @@ namespace Ennio {
 
 			SimpleAction openact = new SimpleAction("open", null);
 			openact.activate.connect(() => {
-				var pick = new FileChooserDialog("Open", 
-													 this,
-													 FileChooserAction.OPEN,
-													 "_Cancel",
-													 ResponseType.CANCEL,
-													 "_Open",                                           
-													 ResponseType.ACCEPT);
-				pick.select_multiple = false;
-				if (pick.run () == ResponseType.ACCEPT) {
-					var doc = new Document.from_file(tabs, pick.get_file());
-					tabs.add_doc (doc);
+				if(!Application.settings.get_boolean("picker-in-dialog")) {
+					var popover = new Popover(this.get_titlebar());
+					var picker = new Box(Orientation.VERTICAL, 5);
+					picker.margin = 5;
+					var chooser = new FileChooserWidget(FileChooserAction.OPEN);
+					chooser.select_multiple = false;
+					picker.add(chooser);
+					var btns = new Box(Orientation.HORIZONTAL, 0);
+					btns.get_style_context().add_class("linked");
+					btns.homogeneous = true;
+					var openbtn = new Button.with_label("Open");
+					openbtn.get_style_context().add_class("suggested-action");
+					openbtn.clicked.connect(() => {
+						var doc = new Document.from_file(tabs, chooser.get_file());
+						tabs.add_doc (doc);
+						popover.popdown();
+					});
+					var cancelbtn = new Button.with_label("Cancel");
+					cancelbtn.clicked.connect(() => {
+						popover.popdown();
+					});
+					btns.add(openbtn);
+					btns.add(cancelbtn);
+					picker.add(btns);
+					picker.width_request = 500;
+					picker.expand = false;
+					picker.show_all();
+					popover.add(picker);
+					popover.popup();
+				} else {
+					var pick = new FileChooserDialog("Open", this,
+						FileChooserAction.OPEN, "_Cancel",
+						ResponseType.CANCEL, "_Open",                                           
+						ResponseType.ACCEPT);
+					pick.select_multiple = false;
+					if (pick.run () == ResponseType.ACCEPT) {
+						var doc = new Document.from_file(tabs, pick.get_file());
+						tabs.add_doc (doc);
+					}
+					pick.destroy ();
 				}
-				pick.destroy ();
 			});
 			this.add_action (openact);
 

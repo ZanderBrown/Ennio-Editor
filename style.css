@@ -6,3 +6,7 @@
 	-GtkWidget-focus-padding : 0px;
 	padding: 0px;
 }
+
+popover list {
+	background-color: inherit;
+}

@@ -52,7 +52,7 @@ namespace Ennio {
 
 			SimpleAction prefact = new SimpleAction("preferences", null);
 			prefact.activate.connect(() => {
-				(new Prefrences(current_win.get_titlebar())).popup();
+				Prefrences.open(current_win);
 			});
 			this.add_action (prefact);
 
