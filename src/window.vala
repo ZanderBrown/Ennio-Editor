@@ -20,8 +20,8 @@ namespace Ennio {
             var newfile = new Button.from_icon_name ("tab-new-symbolic", IconSize.BUTTON);
             newfile.action_name = "app.new";
 
-            save.action_name = "app.save";
-            open.action_name = "app.open";
+            save.action_name = "win.save";
+            open.action_name = "win.open";
             
             hbarleft.pack_start (open, false, false, 0);
             hbarleft.pack_start (newfile, false, false, 0);
@@ -37,6 +37,30 @@ namespace Ennio {
 				tabs.current.saveas ();
 			});
 			this.add_action (saveasact);
+
+			SimpleAction openact = new SimpleAction("open", null);
+			openact.activate.connect(() => {
+				var pick = new FileChooserDialog("Open", 
+													 this,
+													 FileChooserAction.OPEN,
+													 "_Cancel",
+													 ResponseType.CANCEL,
+													 "_Open",                                           
+													 ResponseType.ACCEPT);
+				pick.select_multiple = false;
+				if (pick.run () == ResponseType.ACCEPT) {
+					var doc = new Document.from_file(tabs, pick.get_file());
+					tabs.add_doc (doc);
+				}
+				pick.destroy ();
+			});
+			this.add_action (openact);
+
+			SimpleAction saveact = new SimpleAction("save", null);
+			saveact.activate.connect(() => {
+				tabs.current.save();
+			});
+			this.add_action (saveact);
 
 			var menu = new GLib.Menu ();
 			menu.append ("Save As...", "win.saveas");
