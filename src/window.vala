@@ -44,7 +44,7 @@ namespace Ennio {
             var winmenu = new MenuButton();
             winmenu.image = new Image.from_icon_name("open-menu-symbolic", IconSize.MENU);
             winmenu.margin_start = 5;
-            winmenu.menu_model = menu;
+            winmenu.menu_model = app.get_menu_by_id("win-menu");
 			winmenu.use_popover = true;
             hbarright.pack_start (winmenu, false, false, 0);
             

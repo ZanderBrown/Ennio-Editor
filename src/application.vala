@@ -1,6 +1,8 @@
 using Gtk;
 
+// These cass(s) are part of ennio
 namespace Ennio {
+	// Our custom application class extending Gtk.Application
     public class Application : Gtk.Application {
 		public Window current_win {
 			get { return (Window) active_window; }
@@ -66,12 +68,6 @@ namespace Ennio {
 			this.add_action (dark);
 
 			settings.bind("dark-mode", this, "dark_mode", SettingsBindFlags.DEFAULT);
-
-			/*var menu = new GLib.Menu ();
-			menu.append ("Dark", "app.dark");
-			menu.append ("About", "app.about");
-			menu.append ("Quit", "app.quit");
-			app_menu = menu;*/
 		}
 		protected override void activate () {
             var editor = new Window (this);

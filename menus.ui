@@ -24,4 +24,18 @@
 			</item>
 		</section>
 	</menu>
+	<menu id="win-menu">
+		<section>
+			<item>
+				<attribute name="label" translatable="yes">_Save As...</attribute>
+				<attribute name="action">win.saveas</attribute>
+			</item>
+		</section>
+		<section>
+			<item>
+				<attribute name="label" translatable="yes">_Find</attribute>
+				<attribute name="action">win.find</attribute>
+			</item>
+		</section>
+	</menu>
 </interface>

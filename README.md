@@ -1,26 +1,26 @@
 # Ennio Editor
 A lightweight GTK+ text editor written in Vala.
 
-# TODO
-- [] Create 'Tools' Widget.
+## TODO
+
+- [] Create 'Find' functionality.
+- [] Create 'Replace' functionality.
+- [] Allow user to pick a custom editor theme.
 - [] Create a desktop file.
 
-# COMPILING
-_Before running anything, ensure that gtk+-3.0 > 3.12, valac, and all of their dependencies are already installed._
+## COMPILING
 
-Open a terminal and enter
+Open a terminal to the folder containg ennio's files
 
-```
-make
-```
+Ennio follows the traditional pattern of `./configure && make && make install`
 
-To run Ennio Editor after compilation, enter the following command into the terminal:
+That is `./configure` checks you have all the programs & libraries to compile ennio and generates a *Makefile*
+`make` runs the instructions in the generated *Makefile*. Now ennino is compiled but won't run because GSettings, the system used to store user prefrences, won't know abount Ennio's existence
+So we finally run `make install` (some setups may require prefixing with `sudo`) to copy ennino to the executable directory and it's gsettings data to the data directry
 
-```
-./ennio
-```
+Now ennion can be run with `ennio`
 
-# LINKS
+## LINKS
 * Apache: http://www.apache.org/licenses/LICENSE-2.0.html
 * GTK+: http://www.gtk.org/
 * Vala: https://wiki.gnome.org/Projects/Vala

@@ -196,18 +196,12 @@ namespace Ennio {
 			button.clicked.connect(() => { close_clicked(); });
 			button.get_style_context().add_class("close-tab-button");
 			try {
-				var data =  ".button {\n" +
-						"-GtkButton-default-border : 0px;\n" +
-						"-GtkButton-default-outside-border : 0px;\n" +
-						"-GtkButton-inner-border: 0px;\n" +
-						"-GtkWidget-focus-line-width : 0px;\n" +
-						"-GtkWidget-focus-padding : 0px;\n" +
-						"padding: 0px;\n" +
-						"}";
 				var provider = new CssProvider();
-				provider.load_from_data(data);
+				// Could use load_from_resource but that was only introduced in 3.16
+				provider.load_from_path("resource:///io/github/michaelrutherford/Ennio-Editor/style.css");
 				button.get_style_context().add_provider(provider, 600);
 			} catch (Error e) {
+				warning ("loading css: %s", e.message);
 			}
 			pack_end(button, false, false, 0);			   
 			pack_end(spinner, false, false, 0);
