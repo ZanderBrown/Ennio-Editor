@@ -56,13 +56,12 @@ namespace Ennio {
             text.indent = 2;
             text.monospace = true;
             text.buffer.text = "";
-			text.auto_indent = true;
-			text.indent_on_tab = true;
-			text.show_line_numbers = true;
-			text.highlight_current_line = true;
+			Application.settings.bind("editor-auto-indent", text, "auto_indent", SettingsBindFlags.DEFAULT);
+			Application.settings.bind("editor-indent-on-tab", text, "indent_on_tab", SettingsBindFlags.DEFAULT);
+			Application.settings.bind("editor-show-line-numbers", text, "show_line_numbers", SettingsBindFlags.DEFAULT);
+			Application.settings.bind("editor-highlight-current-line", text, "highlight_current_line", SettingsBindFlags.DEFAULT);
 			text.smart_home_end = SourceSmartHomeEndType.BEFORE;
-			text.auto_indent = true;
-			text.show_right_margin = true;
+			Application.settings.bind("editor-show-right-margin", text, "show_right_margin", SettingsBindFlags.DEFAULT);
 			buffer.set_style_scheme(SourceStyleSchemeManager.get_default().get_scheme("cobalt"));
             add (text);
             label = new DocumentLabel("Untitled");

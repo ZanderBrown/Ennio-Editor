@@ -7,7 +7,7 @@ namespace Ennio {
 		public Window current_win {
 			get { return (Window) active_window; }
 		}
-		public GLib.Settings settings = new GLib.Settings("io.github.michaelrutherford.Ennio-Editor");
+		public static GLib.Settings settings = new GLib.Settings("io.github.michaelrutherford.Ennio-Editor");
 		public bool dark_mode {
 			get {
 				return Gtk.Settings.get_default().gtk_application_prefer_dark_theme;

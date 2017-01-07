@@ -8,5 +8,48 @@
 		    	If disabled, the system default gtk theme will be used
 		 	</description>
 		</key>
+		<key name='editor-theme' type='s'>
+			<default>'cobalt'</default>
+			<summary>Gtk.SourceView Theme</summary>
+			<description>
+		    	The name of a GtkSouceView theme to use to style the text area
+		 	</description>
+		</key>
+		<key name='editor-auto-indent' type='b'>
+			<default>true</default>
+			<summary>Autoindent code</summary>
+			<description>
+		    	When enabled Ennio will attemp to indent code automatically
+		 	</description>
+		</key>
+		<key name='editor-highlight-current-line' type='b'>
+			<default>true</default>
+			<summary>Highlight active line</summary>
+			<description>
+		    	When enabled Ennio will highlight the current line
+		 	</description>
+		</key>
+		<key name='editor-show-right-margin' type='b'>
+			<default>true</default>
+			<summary>Show page margin</summary>
+			<description>
+		    	Display a vertical bar 80 charecters accross
+		    	Helps with languages such as Python where it's good practice to keep lines less than 80 charecters long
+		 	</description>
+		</key>
+		<key name='editor-show-line-numbers' type='b'>
+			<default>true</default>
+			<summary>Number lines</summary>
+			<description>
+		    	Show line numbers down the left of the screen
+		 	</description>
+		</key>
+		<key name='editor-indent-on-tab' type='b'>
+			<default>true</default>
+			<summary>Multiline Indent</summary>
+			<description>
+		    	When multiple lines are selected indent them using the tab key
+		 	</description>
+		</key>
 	</schema>
 </schemalist>
