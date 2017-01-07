@@ -50,7 +50,9 @@ namespace Ennio {
 		public DocumentLabel label;
 		public SourceFile file;
 		public bool untitled = true;
+		private Notebook container;
 		public Document (Notebook container) {
+			this.container = container;
 			text = new SourceView.with_buffer(buffer);
             text.wrap_mode = WrapMode.NONE;
             text.indent = 2;
@@ -66,10 +68,37 @@ namespace Ennio {
             add (text);
             label = new DocumentLabel("Untitled");
 			label.close_clicked.connect(() => {
-				var pagenum = container.page_num(this);
-				container.remove_page(pagenum);
-				if (container.get_n_pages() <= 0) {
-					container.add_doc(new Document(container));
+				if (label.unsaved) {
+					var confirm = new Popover(label);
+					var box = new Box(Orientation.VERTICAL, 5);
+					box.add(new Label("This document has unsaved changes"));
+					var btns = new Box(Orientation.HORIZONTAL, 0);
+					btns.get_style_context().add_class("linked");
+					var savebtn = new Button.with_label("Save");
+					savebtn.get_style_context().add_class("suggested-action");
+					savebtn.clicked.connect(() => {
+						save();
+						close();
+					});
+					var discardbtn = new Button.with_label("Discard");
+					discardbtn.get_style_context().add_class("destructive-action");
+					discardbtn.clicked.connect(() => {
+						close();
+					});
+					var cancelbtn = new Button.with_label("Cancel");
+					cancelbtn.clicked.connect(() => {
+						confirm.popdown();
+					});
+					btns.add(savebtn);
+					btns.add(discardbtn);
+					btns.add(cancelbtn);
+					box.margin = 5;
+					box.add(btns);
+					confirm.add(box);
+					box.show_all();
+					confirm.popup();
+				} else {
+					close();
 				}
 			});
 			buffer.changed.connect(() => {
@@ -107,6 +136,13 @@ namespace Ennio {
 				label.working = false;
 				label.unsaved = false;
 			});
+		}
+		private void close () {
+			var pagenum = container.page_num(this);
+			container.remove_page(pagenum);
+			if (container.get_n_pages() <= 0) {
+				container.add_doc(new Document(container));
+			}
 		}
 		public void saveas () {
 			var pick = new FileChooserDialog("Save As", 
@@ -178,6 +214,7 @@ namespace Ennio {
 			set { spinner.active = value; }
 		}
 		private Label label;
+		public Button button = new Button();
 		public DocumentLabel(string label_text) {
 			orientation = Orientation.HORIZONTAL;
 			spacing = 5;
@@ -187,8 +224,7 @@ namespace Ennio {
 			label.margin_start = 45;
 			
 			pack_start(label, true, true, 0);
-			
-			var button = new Button();
+
 			button.relief = ReliefStyle.NONE;
 			button.focus_on_click = false;
 			button.add(new Image.from_icon_name("window-close-symbolic", IconSize.MENU));
