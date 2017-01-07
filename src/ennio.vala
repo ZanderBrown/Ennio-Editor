@@ -194,6 +194,7 @@ namespace Ennio {
 			button.focus_on_click = false;
 			button.add(new Image.from_icon_name("window-close-symbolic", IconSize.MENU));
 			button.clicked.connect(() => { close_clicked(); });
+			button.get_style_context().add_class("close-tab-button");
 			try {
 				var data =  ".button {\n" +
 						"-GtkButton-default-border : 0px;\n" +

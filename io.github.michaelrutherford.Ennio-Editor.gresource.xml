@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+	<gresource prefix="/io/github/michaelrutherford/Ennio-Editor/">
+		<file>style.css</file>
+	</gresource>
+	<gresource prefix="/io/github/michaelrutherford/Ennio-Editor/gtk/">
+		<file preprocess="xml-stripblanks">menus.ui</file>
+	</gresource>
+</gresources>

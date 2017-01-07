@@ -1,0 +1,12 @@
+<schemalist>
+	<schema id="io.github.michaelrutherford.Ennio-Editor" path="/io/github/michaelrutherford/Ennio-Editor/">
+		<key name='dark-mode' type='b'>
+			<default>false</default>
+			<summary>Use Gtk Dark Mode</summary>
+			<description>
+		    	If enabled, Ennio will requesst Gtk uses a dark theme
+		    	If disabled, the system default gtk theme will be used
+		 	</description>
+		</key>
+	</schema>
+</schemalist>

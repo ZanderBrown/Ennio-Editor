@@ -5,6 +5,15 @@ namespace Ennio {
 		public Window current_win {
 			get { return (Window) active_window; }
 		}
+		public GLib.Settings settings = new GLib.Settings("io.github.michaelrutherford.Ennio-Editor");
+		public bool dark_mode {
+			get {
+				return Gtk.Settings.get_default().gtk_application_prefer_dark_theme;
+			}
+			set {
+				Gtk.Settings.get_default().gtk_application_prefer_dark_theme = value;
+			}
+		}
 		public Application () {
 			Object(application_id: "io.github.michaelrutherford.Ennio-Editor", flags: ApplicationFlags.FLAGS_NONE);
 		}
@@ -23,7 +32,7 @@ namespace Ennio {
 					"logo_icon_name", "accessories-text-editor",
 					"website", "http://michaelrutherford.github.io",
 					"version", "Version: 0.0",
-					"copyright", "Copyright © 2015-2016 Michael Rutherford \r\n Copyright © 2016 Zander Brown",
+					"copyright", "Copyright © 2015-2016 Michael Rutherford \r\n Copyright © 2017 Zander Brown",
 					"license", "Ennio Editor is released under the Apache v2.0 license.",
 					"wrap_license", true,
 					null
@@ -52,15 +61,17 @@ namespace Ennio {
 				Variant state = dark.get_state ();
 				bool b = state.get_boolean ();
 				dark.set_state (new Variant.boolean (!b));
-				Gtk.Settings.get_default().set_property("gtk-application-prefer-dark-theme", !b);
+				dark_mode = !b;
 			});
 			this.add_action (dark);
 
-			var menu = new GLib.Menu ();
+			settings.bind("dark-mode", this, "dark_mode", SettingsBindFlags.DEFAULT);
+
+			/*var menu = new GLib.Menu ();
 			menu.append ("Dark", "app.dark");
 			menu.append ("About", "app.about");
 			menu.append ("Quit", "app.quit");
-			app_menu = menu;
+			app_menu = menu;*/
 		}
 		protected override void activate () {
             var editor = new Window (this);
