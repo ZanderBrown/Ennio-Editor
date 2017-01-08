@@ -8,7 +8,7 @@
 		    	If disabled, the system default gtk theme will be used
 		 	</description>
 		</key>
-		<key name='editor-theme' type='s'>
+		<key name='colour-scheme' type='s'>
 			<default>'cobalt'</default>
 			<summary>Gtk.SourceView Theme</summary>
 			<description>

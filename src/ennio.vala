@@ -18,7 +18,7 @@
 using Gtk;
 
 namespace Ennio {
-    public class Notebook : Gtk.Notebook {
+	public class Notebook : Gtk.Notebook {
 		public Document current {
 			get {
 				return (Document) this.get_nth_page(
@@ -39,12 +39,12 @@ namespace Ennio {
 					add_doc(new Document(this));
 				}
 			});
-            this.set_current_page(this.append_page (doc, doc.label));
-            this.set_tab_reorderable(doc, true);
-            doc.show_all();
+			this.set_current_page(this.append_page (doc, doc.label));
+			this.set_tab_reorderable(doc, true);
+			doc.show_all();
 		}
 	}
-    public class Document : ScrolledWindow {
+	public class Document : ScrolledWindow {
 		public SourceBuffer buffer = new SourceBuffer(null);
 		public SourceView text;
 		public DocumentLabel label;
@@ -54,19 +54,22 @@ namespace Ennio {
 		public Document (Notebook container) {
 			this.container = container;
 			text = new SourceView.with_buffer(buffer);
-            text.wrap_mode = WrapMode.NONE;
-            text.indent = 2;
-            text.monospace = true;
-            text.buffer.text = "";
+			text.wrap_mode = WrapMode.NONE;
+			text.indent = 2;
+			text.monospace = true;
+			text.buffer.text = "";
 			Application.settings.bind("editor-auto-indent", text, "auto_indent", SettingsBindFlags.DEFAULT);
 			Application.settings.bind("editor-indent-on-tab", text, "indent_on_tab", SettingsBindFlags.DEFAULT);
 			Application.settings.bind("editor-show-line-numbers", text, "show_line_numbers", SettingsBindFlags.DEFAULT);
 			Application.settings.bind("editor-highlight-current-line", text, "highlight_current_line", SettingsBindFlags.DEFAULT);
 			text.smart_home_end = SourceSmartHomeEndType.BEFORE;
 			Application.settings.bind("editor-show-right-margin", text, "show_right_margin", SettingsBindFlags.DEFAULT);
-			buffer.set_style_scheme(SourceStyleSchemeManager.get_default().get_scheme("cobalt"));
-            add (text);
-            label = new DocumentLabel("Untitled");
+			buffer.set_style_scheme(SourceStyleSchemeManager.get_default().get_scheme(Application.settings.get_string("colour-scheme")));
+			Application.settings.changed["colour-scheme"].connect(() => {
+				buffer.set_style_scheme(SourceStyleSchemeManager.get_default().get_scheme(Application.settings.get_string("colour-scheme")));
+			});
+			add (text);
+			label = new DocumentLabel("Untitled");
 			label.close_clicked.connect(() => {
 				if (label.unsaved) {
 					var confirm = new Popover(label);
@@ -187,7 +190,7 @@ namespace Ennio {
 					buffer.highlight_syntax = false;
 				}
 			});
-   		}
+		}
 	}
 	public class DocumentLabel : Box {
 		public signal void close_clicked();
@@ -234,14 +237,6 @@ namespace Ennio {
 			button.add(new Image.from_icon_name("window-close-symbolic", IconSize.MENU));
 			button.clicked.connect(() => { close_clicked(); });
 			button.get_style_context().add_class("close-tab-button");
-			try {
-				var provider = new CssProvider();
-				// Could use load_from_resource but that was only introduced in 3.16
-				provider.load_from_path("resource:///io/github/michaelrutherford/Ennio-Editor/style.css");
-				button.get_style_context().add_provider(provider, 600);
-			} catch (Error e) {
-				warning ("loading css: %s", e.message);
-			}
 			pack_end(button, false, false, 0);
 			pack_end(spinner, false, false, 0);
 			show_all();

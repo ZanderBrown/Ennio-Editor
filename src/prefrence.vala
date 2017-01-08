@@ -27,6 +27,9 @@ namespace Ennio {
 		[GtkChild]
 		private Button reset;
 
+		[GtkChild]
+		private SourceStyleSchemeChooserButton colour_scheme;
+
 		public Prefrences () {
 			Application.settings.bind("editor-show-line-numbers", line_numbers, "active", SettingsBindFlags.DEFAULT);
 			Application.settings.bind("editor-show-right-margin", right_margin, "active", SettingsBindFlags.DEFAULT);
@@ -35,6 +38,10 @@ namespace Ennio {
 			Application.settings.bind("editor-indent-on-tab", tab_indent, "active", SettingsBindFlags.DEFAULT);
 			Application.settings.bind("prefs-in-dialog", prefs_dialog, "active", SettingsBindFlags.DEFAULT);
 			Application.settings.bind("picker-in-dialog", picker_dialog, "active", SettingsBindFlags.DEFAULT);
+			colour_scheme.style_scheme = SourceStyleSchemeManager.get_default().get_scheme(Application.settings.get_string("colour-scheme"));
+			colour_scheme.notify["style-scheme"].connect(() => {
+				Application.settings.set_string("colour-scheme", colour_scheme.style_scheme.id);
+			});
 		}
 
 		public static void open (Window parent) {

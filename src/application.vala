@@ -7,7 +7,12 @@ namespace Ennio {
 		public Window current_win {
 			get { return (Window) active_window; }
 		}
-		public static GLib.Settings settings = new GLib.Settings("io.github.michaelrutherford.Ennio-Editor");
+		private static GLib.Settings _settings = new GLib.Settings("io.github.michaelrutherford.Ennio-Editor");
+		public static GLib.Settings settings {
+			get {
+				return _settings;
+			}
+		}
 		public bool dark_mode {
 			get {
 				return Gtk.Settings.get_default().gtk_application_prefer_dark_theme;
@@ -66,6 +71,15 @@ namespace Ennio {
 			this.add_action (dark);
 
 			settings.bind("dark-mode", this, "dark_mode", SettingsBindFlags.DEFAULT);
+
+			try {
+				var provider = new CssProvider();
+				var cssfile = File.new_for_uri("resource:///io/github/michaelrutherford/Ennio-Editor/style.css");
+				provider.load_from_file(cssfile);
+				StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), provider, 600);
+			} catch (Error e) {
+				warning ("loading css: %s", e.message);
+			}
 		}
 		protected override void activate () {
             var editor = new Window (this);
