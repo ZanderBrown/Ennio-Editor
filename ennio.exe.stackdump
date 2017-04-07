@@ -1,0 +1,8 @@
+Exception: STATUS_ACCESS_VIOLATION at eip=6688454A
+eax=00000000 ebx=00000000 ecx=750677E4 edx=00000001 esi=03CF4208 edi=0069BC04
+ebp=03B6C080 esp=0069BB0C program=C:\msys32\home\ajhb2\Ennio-Editor\ennio.exe, pid 3864, thread main
+cs=001B ds=0023 es=0023 fs=003B gs=0000 ss=0023
+Stack trace:
+Frame     Function  Args
+03B6C080  6688454A (00000001, 00000001, 1182000A, 40749C26)
+End of stack trace

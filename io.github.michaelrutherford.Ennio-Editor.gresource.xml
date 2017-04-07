@@ -3,6 +3,7 @@
 	<gresource prefix="/io/github/michaelrutherford/Ennio-Editor/">
 		<file>style.css</file>
 		<file preprocess="xml-stripblanks">prefs.glade</file>
+		<file preprocess="xml-stripblanks">find.glade</file>
 	</gresource>
 	<gresource prefix="/io/github/michaelrutherford/Ennio-Editor/gtk/">
 		<file preprocess="xml-stripblanks">menus.ui</file>

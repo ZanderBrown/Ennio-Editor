@@ -10,3 +10,11 @@
 popover list {
 	background-color: inherit;
 }
+
+.statusbar {
+	background-color: rgba(0,0,0,0.6);
+	border: 1px solid black;
+	border-radius: 7px;
+	padding: 10px 20px;
+	color: white;
+}

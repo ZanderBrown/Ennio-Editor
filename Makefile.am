@@ -7,6 +7,10 @@ ennio_SOURCES =														   \
 	src/application.vala											   \
 	src/window.vala													   \
 	src/prefrence.vala												   \
+	src/find.vala													   \
+	src/notebook.vala												   \
+	src/document.vala												   \
+	src/documentlabel.vala											   \
 	src/ennio.vala													   \
 	resources.c
 

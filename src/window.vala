@@ -30,6 +30,8 @@ namespace Ennio {
 
 			tabs.switch_page.connect((page) => {
 				title = ((DocumentLabel) tabs.get_tab_label(page)).text;
+				((SimpleAction) lookup_action("win.redo")).set_enabled(((Document) page).buffer.can_undo);
+				((SimpleAction) lookup_action("win.undo")).set_enabled(((Document) page).buffer.can_redo);
 			});
 
 			SimpleAction saveasact = new SimpleAction("saveas", null);
@@ -37,6 +39,25 @@ namespace Ennio {
 				tabs.current.saveas ();
 			});
 			this.add_action (saveasact);
+
+			SimpleAction undoact = new SimpleAction("undo", null);
+			undoact.activate.connect(() => {
+				tabs.current.buffer.undo ();
+			});
+			this.add_action (undoact);
+
+			SimpleAction findact = new SimpleAction("find", null);
+			findact.activate.connect(() => {
+				var find = new Find(tabs.current);
+				find.popup ();
+			});
+			this.add_action (findact);
+
+			SimpleAction redoact = new SimpleAction("redo", null);
+			redoact.activate.connect(() => {
+				tabs.current.buffer.redo ();
+			});
+			this.add_action (redoact);
 
 			SimpleAction openact = new SimpleAction("open", null);
 			openact.activate.connect(() => {
@@ -100,7 +121,7 @@ namespace Ennio {
 			winmenu.use_popover = true;
 			hbarright.pack_start (winmenu, false, false, 0);
 			
-			this.add (tabs);
+			this.add(tabs);
 			this.set_default_size (800, 700);
 			this.window_position = WindowPosition.CENTER;
 		}
